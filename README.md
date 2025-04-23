@@ -52,24 +52,23 @@ Pour chaque exercice :
 - [ ] 1.3 Documenter votre solution ici
 
 _Votre réponse pour l'exercice 1 :_
-```
+
 
 1.1 Dans cette étape, nous avons ajouté une gestion d'état pour la valeur de recherche à l’aide du hook useState. Ensuite, nous avons utilisé useEffect pour exécuter la fonction onSearch à chaque changement pertinent du champ de recherche.
-```
+
 ![Exercice1.1](src/assets/image_ex1.1.png)
-```
+
 Cela permet de déclencher la recherche (via la fonction onSearch) uniquement lorsque l'utilisateur saisit quelque chose dans le champ.
-```
-```
+
 1.2 Pour éviter d’exécuter la recherche à chaque frappe de clavier (ce qui pourrait surcharger le système ou l’API), nous avons créé un hook personnalisé useDebounce.
-```
+
 ![Exercice 1.2](src/assets/image_ex1.2.png)
 
 
 
 
 
-```
+
 
 ### Exercice 2 : Context et Internationalisation
 #### Objectif : Gérer les préférences de langue
