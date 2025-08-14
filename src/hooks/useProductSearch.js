@@ -1,22 +1,30 @@
+// useProductSearch.js
 import { useState, useEffect } from 'react';
-
-// TODO: Exercice 3.1 - Créer le hook useDebounce
-// TODO: Exercice 3.2 - Créer le hook useLocalStorage
+import useDebounce from './useDebounce';
 
 const useProductSearch = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  // TODO: Exercice 4.2 - Ajouter l'état pour la pagination
+  // Exercice 4.2 - Ajouter l'état pour la pagination
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const itemsPerPage = 6;
 
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        // TODO: Exercice 4.2 - Modifier l'URL pour inclure les paramètres de pagination
+        // Exercice 4.2 - Modification de l'URL (mais l'API ne supporte pas la pagination)
         const response = await fetch('https://api.daaif.net/products?delay=1000');
         if (!response.ok) throw new Error('Erreur réseau');
         const data = await response.json();
-        setProducts(data.products);
+        
+        // Pagination côté client
+        const startIndex = (currentPage - 1) * itemsPerPage;
+        const endIndex = startIndex + itemsPerPage;
+        setProducts(data.products.slice(startIndex, endIndex));
+        
+        setTotalPages(Math.ceil(data.products.length / itemsPerPage));
         setLoading(false);
       } catch (err) {
         setError(err.message);
@@ -25,17 +33,33 @@ const useProductSearch = () => {
     };
 
     fetchProducts();
-  }, []); // TODO: Exercice 4.2 - Ajouter les dépendances pour la pagination
+  }, [currentPage]); // Déclencher au changement de page
 
-  // TODO: Exercice 4.1 - Ajouter la fonction de rechargement
-  // TODO: Exercice 4.2 - Ajouter les fonctions pour la pagination
+  // Exercice 4.1 - Ajouter la fonction de rechargement
+  const reload = () => {
+    setCurrentPage(1);
+  };
+
+  // Exercice 4.2 - Ajouter les fonctions pour la pagination
+  const nextPage = () => {
+    if (currentPage < totalPages) setCurrentPage(p => p + 1);
+  };
+
+  const previousPage = () => {
+    if (currentPage > 1) setCurrentPage(p => p - 1);
+  };
 
   return { 
     products, 
     loading, 
     error,
-    // TODO: Exercice 4.1 - Retourner la fonction de rechargement
-    // TODO: Exercice 4.2 - Retourner les fonctions et états de pagination
+    // Exercice 4.1 - Retourner la fonction de rechargement
+    reload,
+    // Exercice 4.2 - Retourner les fonctions et états de pagination
+    currentPage,
+    totalPages,
+    nextPage,
+    previousPage
   };
 };
 
